@@ -17,3 +17,9 @@ class Pattern(models.Model):
     description = models.TextField()
     published = models.DateField()
     link = models.URLField()
+
+# User Model
+class User(models.Model):
+    username = models.CharField(max_length=255)
+    email = models.EmailField()
+    password = models.CharField(max_length=255)
