@@ -1,13 +1,33 @@
 from django.db import models
 
-# Yarn Model
+class Colour(models.TextChoices):
+    '''Colour Enum to store colour choices'''
+    RED = "Red"
+    ORANGE = "Orange"
+    YELLOW = "Yellow"
+    GREEN = "Green"
+    BLUE = "Blue"
+    PURPLE = "Purple"
+    PINK = "Pink"
+    BROWN = "Brown"
+    BLACK = "Black"
+    WHITE = "White"
+    GREY = "Grey"
+
+class Material(models.TextChoices):
+    '''Material Enum to store material choices'''
+    WOOL = "Wool"
+    COTTON = "Cotton"
+    ACRYLIC = "Acrylic"
+    POLYESTER = "Polyester"
+
 class Yarn(models.Model):
     '''Yarn Model to store yarn information'''
     brand= models.CharField(max_length=255)
     weight= models.IntegerField
     # NEED TO MAKE THESE INTO ENUMS
-    colour = models.TextChoices("Colour", "RED ORANGE YELLOW GREEN BLUE PURPLE PINK BROWN BLACK WHITE GREY")
-    material = models.TextChoices("Material", "WOOL COTTON ACRYLIC POLYESTER")
+    colour = models.CharField(max_length=50, choices=Colour.choices)
+    material = models.TextChoices(max_length=50, choices=Material.choices)
     price = models.FloatField()
     yardage = models.IntegerField()
     hook_size = models.FloatField()
