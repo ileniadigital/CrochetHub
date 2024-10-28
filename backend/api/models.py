@@ -11,6 +11,9 @@ class Yarn(models.Model):
     hook_size = models.FloatField()
     available= models.BooleanField()
 
-# Tutorials Model
-
-# User Model
+# Pattern Model
+class Pattern(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    published = models.DateField()
+    link = models.URLField()
