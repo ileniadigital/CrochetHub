@@ -24,10 +24,9 @@ class Material(models.TextChoices):
 class Yarn(models.Model):
     '''Yarn Model to store yarn information'''
     brand= models.CharField(max_length=255)
-    weight= models.IntegerField
-    # NEED TO MAKE THESE INTO ENUMS
+    weight= models.IntegerField()
     colour = models.CharField(max_length=50, choices=Colour.choices)
-    material = models.TextChoices(max_length=50, choices=Material.choices)
+    material = models.CharField(max_length=50, choices=Material.choices)
     price = models.FloatField()
     yardage = models.IntegerField()
     hook_size = models.FloatField()
