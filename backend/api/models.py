@@ -14,12 +14,14 @@ class Colour(models.TextChoices):
     WHITE = "White"
     GREY = "Grey"
 
+
 class Material(models.TextChoices):
     '''Material Enum to store material choices'''
     WOOL = "Wool"
     COTTON = "Cotton"
     ACRYLIC = "Acrylic"
     POLYESTER = "Polyester"
+
 
 class Yarn(models.Model):
     '''Yarn Model to store yarn information'''
@@ -31,9 +33,9 @@ class Yarn(models.Model):
     yardage = models.IntegerField()
     hook_size = models.FloatField()
 
-    
     def __str__(self): 
         return f"{self.brand} {self.colour} {self.material}"
+
 
 class Pattern(models.Model):
     '''Pattern Model to store pattern information'''
@@ -48,6 +50,7 @@ class Pattern(models.Model):
     def __str__(self): 
         return f"{self.title}"
 
+
 class User(models.Model):
     '''User Model to store user information'''
     username = models.CharField(max_length=255)
@@ -57,11 +60,13 @@ class User(models.Model):
     def __str__(self): 
         return f"{self.username}"
 
+
 class PatternYarn(models.Model):
     '''PatternYarn Model to store yarn needed for a pattern'''
     pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
     yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+
 
 class Project(models.Model):
     '''Project Model to store project with materials and pattern'''

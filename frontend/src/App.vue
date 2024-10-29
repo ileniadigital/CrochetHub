@@ -43,7 +43,7 @@ export default {
         }
     },
     async mounted() {
-        const response = await fetch('http://localhost:8000/api/test.json')
+        const response = await fetch('http://localhost:8000/api/patterns.json')
         this.response_data = await response.json()
     }
 }
