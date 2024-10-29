@@ -18,37 +18,40 @@
         </li>
 </ul>
 
-<!-- Yarn data -->
-<h3>Yarns</h3> 
+<!-- Data -->
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <Yarn :yarns="yarns"/>
+    </div>
+</div>
+<!-- <h3>Yarns</h3> 
 <ul> 
     <li v-for="yarn in yarns" :key="yarn.id">{{ yarn.brand }} - {{ yarn.colour }}
     </li> 
-</ul>
+</ul> -->
 </template>
 
 <script>
     import axios from 'axios';
+    import Yarn from './Yarn.vue';
     const base = 'http://localhost:8000/';
 
     export default {
+        components: {
+            Yarn
+        },
         data() {
             return {
                 yarns: []
             };
         },
         created() {
-            this.fetchYarns();
+           // this.fetchYarns();
         },
         methods: {
-            async fetchYarns() {
-                try {
-                    const response = await axios.get(`${base}/api/yarns`);
-                    this.yarns = response.data.yarns;
-                    console.log('Yarns:', this.yarns);
-                } catch (error) {
-                    console.error('Error fetching yarn:', error);
-                }
-            }
+            handleYarns(yarns) {
+                this.yarns = yarns;
+            },
         }
     }
 </script>
