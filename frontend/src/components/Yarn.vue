@@ -1,9 +1,43 @@
 <template>
-    <!-- Yarn data -->
-    <h3>Yarns</h3> 
+    <!-- Properties headings-->
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                Brand
+                </div>
+            <div class="col">
+                Material
+                </div>
+            <div class="col">
+                Colour
+                </div>
+            <div class="col">
+                Weight
+                </div>
+            <div class="col">
+                Price
+            </div>
+            <div class="col">
+                Yardage
+            </div>
+            <div class="col">
+                Hook Size
+            </div>
+        </div>
+    </div>
+    <!-- Yarn data --> 
     <ul class="list-group"> 
         <li class="list-group-item" v-for="yarn in yarns" :key="yarn.id">
-            {{ yarn.brand }} - {{ yarn.colour }}
+            <div class="info">
+                <div class="brand">{{ yarn.brand }}</div>
+                <div class="material">{{ yarn.material }}</div>
+                <div class="colour">{{ yarn.colour }}</div>
+                <div class="weight">{{ yarn.weight }}g</div>
+                <div class="price">£{{ yarn.price }}</div>
+                <div class="yardage">{{ yarn.yardage }}m</div>
+                <div class="hook">{{ yarn.hook_size }}mm</div>
+            </div>
+            
         </li> 
     </ul>
 </template>
@@ -34,3 +68,29 @@
         }
     }
 </script>
+
+<style scoped>
+    .row{
+        font-weight: bold;
+        font-size: 1.1em;
+        background-color: #c291e2;
+        margin-top: 1em;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+    .info {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+    }
+    .brand, .material, .colour, .weight, .price, .yardage, .hook {
+        flex: 1;
+    }
+    .brand {
+        font-weight: bold;
+    }
+    .material {
+        font-style: italic;
+    }
+
+</style>
