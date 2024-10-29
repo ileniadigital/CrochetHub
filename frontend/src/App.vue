@@ -1,17 +1,19 @@
 <template>
     <div class="container pt-3">
         <div class="h1 text-center border rounded bg-light p-2 mb-3">
-            API Client
+            Ilenia's Crochet Hub
         </div>
         <div class="mb-3">
-            <u>Response data</u>:             
+            <!-- <u>Response data</u>:              -->
         </div>
-        <pre>{{ response_data }}</pre>
+        <!-- <pre>{{ response_data }}</pre> -->
+
+        <Tab />
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
-        </button>
+        </button> -->
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -36,14 +38,19 @@
   </template>
   
 <script>
+import Tab from './components/Tab.vue'
+
 export default {
+    components: {
+        Tab
+    },
     data() {
         return {
             response_data: '',
         }
     },
     async mounted() {
-        const response = await fetch('http://localhost:8000/api/patterns.json')
+        const response = await fetch('http://localhost:8000/api/yarns')
         this.response_data = await response.json()
     }
 }

@@ -25,6 +25,7 @@ class Material(models.TextChoices):
 
 class Yarn(models.Model):
     '''Yarn Model to store yarn information'''
+    id = models.AutoField(primary_key=True)
     brand = models.CharField(max_length=255)
     weight = models.IntegerField()
     colour = models.CharField(max_length=50, choices=Colour.choices)

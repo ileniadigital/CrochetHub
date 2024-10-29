@@ -20,10 +20,9 @@ from .views import *
 
 urlpatterns = [
     # API entry points should be defined here
-    path('test.json', test_api_view, name='api test'),
-    path('yarns.json', yarns_api_view, name='yarns'),
-    path('patterns.json', patterns_api_view, name='patterns'),
-#     path('users.json', users_api_view, name='users'),
-#     path('projects.json', projects_api_view, name='projects'),
-#     path('patternyarns.json', patternyarns_api_view, name='patternyarns')
+    path('yarns', yarns_api_view, name='yarns'),
+    path('patterns', patterns_api_view, name='patterns'),
+    path('users', users_api_view, name='users'),
+    path('projects', projects_api_view, name='projects'),
+    path('patternyarns', patternyarns_api_view, name='patternyarns')
  ]
