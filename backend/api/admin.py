@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Colour, Material, Yarn, Pattern, User, ProjectYarn, Project
+from .models import Yarn, Pattern, User, ProjectYarn, Project
 
 @admin.register(Yarn)
 class YarnAdmin(admin.ModelAdmin):
@@ -9,7 +9,7 @@ class YarnAdmin(admin.ModelAdmin):
 
 @admin.register(Pattern)
 class PatternAdmin(admin.ModelAdmin):
-    list_display = ('title', ' description', 'published', 'link', 'transcript')
+    list_display = ('title', 'description', 'published', 'link', 'transcript')
     search_fields = ('title', 'description')
 
 @admin.register(User)
@@ -24,9 +24,6 @@ class ProjectYarnAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'yarn', 'pattern', 'user', 'date_started', 'date_finished', 'notes')
+    list_display = ('title', 'description','user', 'date_started', 'date_finished', 'notes')
     list_filter = ('date_started', 'date_finished')
     search_fields = ('title', 'description', 'user__username')
-
-admin.site.register(Colour)
-admin.site.register(Material)
