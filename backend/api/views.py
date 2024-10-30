@@ -16,8 +16,8 @@ def test_api_view(request):
 def yarn_api_view(request):
     if request.method == 'GET':
         return yarn_get(request)
-    # if request.method == 'PUT':
-    #     return yarn_put(request, id)
+    if request.method == 'POST':
+        return yarn_post(request)
     if request.method == 'DELETE':
         return yarn_delete(request)
 
@@ -25,6 +25,22 @@ def yarn_get(request):
     yarns = list(Yarn.objects.all().values())
     return JsonResponse({'yarns': yarns})
 
+def yarn_post(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        yarn = Yarn.objects.create(
+            brand=data['brand'],
+            weight=data['weight'],
+            colour=data['colour'],
+            material=data['material'],
+            price=data['price'],
+            yardage=data['yardage'],
+            hook_size=data['hook_size']
+        )
+        return JsonResponse({'message': 'Yarn created successfully'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
 def yarn_put(request,id):
     if request.method == 'PUT':
         try:

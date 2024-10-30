@@ -1,4 +1,6 @@
 <template>
+    <!-- Add modal -->
+     <Add :model="model" :data="yarn" @added="fetchYarns" />
     <!-- Properties headings-->
     <div class="container text-center">
         <div class="row">
@@ -51,17 +53,20 @@
 <script>
     import axios from 'axios';
     const url = 'http://localhost:8000';
+    import Add from './Action/Add.vue';
     import Edit from './Action/Edit.vue';
     import Delete from './Action/Delete.vue';
 
     export default {
         components: {
+            Add,
             Edit,
             Delete
         },
         data() {
             return {
                 yarns: [],
+                model: 'Yarn'
             };
         },
         created() {
