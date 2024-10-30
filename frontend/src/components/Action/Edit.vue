@@ -19,7 +19,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="saveChanges">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="saveChanges" data-bs-dismiss="modal">Save changes</button>
           </div>
         </div>
       </div>
@@ -59,16 +59,13 @@ export default {
       this.submitYarnData(formData);
     },
     async submitYarnData(formData) {
-      console.log('Form data:', formData);
       try {
-        const yarnId = formData.id; // Get the ID from the passed data
-        if (!yarnId) {
+        if (!formData.id) {
           console.error('Yarn ID is missing in the data:', this.data);
           return;
         }
-        console.log('Yarn ID:', yarnId);
-        console.log(`${url}/api/yarns/${yarnId}`);
-        const response = await axios.put(`${url}/api/yarn/${yarnId}`, formData); 
+        const response = await axios.put(`${url}/api/yarn/${formData.id}`, formData);
+        this.$emit('edited', response.data); 
         console.log('Item edited', response.data); 
       } catch (error) {
         console.error('Error during PUT request:', error);

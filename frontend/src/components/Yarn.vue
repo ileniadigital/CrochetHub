@@ -39,7 +39,7 @@
                 <div class="hook">{{ yarn.hook_size }}mm</div>
                 <!-- Edit button -->
                 <div class="buttons">
-                    <Edit :data="yarn" modelName="Yarn"/>
+                    <Edit :data="yarn" @edited="fetchYarns"/>
                      <!-- Delete button -->
                     <Delete :id="yarn.id" @deleted="fetchYarns"/>
                 </div>
