@@ -70,7 +70,7 @@
         methods: {
             async fetchYarns() {
                 try {
-                    const response = await axios.get(`${url}/api/yarns`);
+                    const response = await axios.get(`${url}/api/yarn`);
                     this.yarns = response.data.yarns;
                     this.$emit('yarns', this.yarns); // Emit yarns to Tab
                 } catch (error) {

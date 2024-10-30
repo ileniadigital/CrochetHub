@@ -50,7 +50,7 @@ export default {
         }
     },
     async mounted() {
-        const response = await fetch('http://localhost:8000/api/yarns')
+        const response = await fetch('http://localhost:8000/api/yarn')
         this.response_data = await response.json()
     }
 }

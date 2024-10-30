@@ -39,7 +39,7 @@ export default {
     methods: {
         async confirmDelete() {
             try { 
-                const response = await axios.delete(`${url}/api/yarns`, { params: { id: this.id } }); 
+                const response = await axios.delete(`${url}/api/yarn`, { params: { id: this.id } }); 
                 console.log('Item deleted', response.data); 
                 this.$emit('deleted', this.id); 
             } catch (error) {

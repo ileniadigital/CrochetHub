@@ -15,7 +15,7 @@
           </div>
           <div class="modal-body">
             <!-- Pass model-specific fields to ActionForm -->
-            <ActionForm :data="data" @submit="handleFormSubmit" />
+            <ActionForm ref="actionForm" :data="data" @submit="formSubmit" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -28,7 +28,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 import ActionForm from './ActionForm.vue';
+const url = 'http://localhost:8000';
 
 export default {
   data() {
@@ -48,11 +50,29 @@ export default {
     },
   },
   methods: {
-    handleFormSubmit(formData) {
-      console.log(`Form data for`, formData);
-      // Process the form data (e.g., send it to an API or update local state)
+    async saveChanges() {
+      // Call the submitForm method of the ActionForm component
+      this.$refs.actionForm.submitForm();
     },
-    saveChanges() {
+    formSubmit(formData) {
+      // Now you have the form data to send in the PUT request
+      this.submitYarnData(formData);
+    },
+    async submitYarnData(formData) {
+      console.log('Form data:', formData);
+      try {
+        const yarnId = formData.id; // Get the ID from the passed data
+        if (!yarnId) {
+          console.error('Yarn ID is missing in the data:', this.data);
+          return;
+        }
+        console.log('Yarn ID:', yarnId);
+        console.log(`${url}/api/yarns/${yarnId}`);
+        const response = await axios.put(`${url}/api/yarn/${yarnId}`, formData); 
+        console.log('Item edited', response.data); 
+      } catch (error) {
+        console.error('Error during PUT request:', error);
+      }
     }
   }
 };

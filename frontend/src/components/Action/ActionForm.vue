@@ -40,19 +40,18 @@
     },
     data() {
       return {
-        formData: {} // Initialize as an empty object
+        formData: {}
       };
     },
     created() {
-      console.log("ActionForm data:", this.data);
-      // Initialize formData based on the data object
+      // Initialize formData from the data prop
       for (const key in this.data) {
-        this.formData[key] = this.data[key] || ''; // Fill with existing data or empty string
+        this.formData[key] = this.data[key] || '';
       }
     },
     methods: {
       submitForm() {
-        this.$emit('submit', this.formData); // Emit form data to parent component
+        this.$emit('submit', this.formData);
       }
     }
   };

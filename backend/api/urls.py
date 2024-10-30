@@ -20,7 +20,8 @@ from .views import *
 
 urlpatterns = [
     # API entry points should be defined here
-    path('yarns', yarns_api_view, name='yarns'),
+    path('yarn', yarn_api_view, name='yarn'),
+    path('yarn/<int:id>', yarn_put, name='yarnChange'),
     path('patterns', patterns_api_view, name='patterns'),
     path('users', users_api_view, name='users'),
     path('projects', projects_api_view, name='projects'),

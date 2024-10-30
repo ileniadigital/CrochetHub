@@ -3,7 +3,7 @@ from .models import Yarn, Pattern, User, PatternYarn, Project
 
 @admin.register(Yarn)
 class YarnAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'weight', 'colour', 'material', 'price', 'yardage', 'hook_size')
+    list_display = ('id','brand', 'weight', 'colour', 'material', 'price', 'yardage', 'hook_size')
     search_fields = ('brand', 'colour', 'material')
 
 @admin.register(Pattern)
