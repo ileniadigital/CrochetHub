@@ -23,6 +23,7 @@
             <div class="col">
                 Hook Size
             </div>
+            <div class="col"></div>
         </div>
     </div>
     <!-- Yarn data --> 
@@ -36,8 +37,14 @@
                 <div class="price">£{{ yarn.price }}</div>
                 <div class="yardage">{{ yarn.yardage }}m</div>
                 <div class="hook">{{ yarn.hook_size }}mm</div>
+                <!-- Edit button -->
+                <div class="buttons">
+                    <Edit :yarn="yarn" />
+                     <!-- Delete button -->
+                    <!-- TO REPLACE -->
+                    <Edit :yarn="yarn" />
+                </div>
             </div>
-            
         </li> 
     </ul>
 </template>
@@ -45,8 +52,12 @@
 <script>
     import axios from 'axios';
     const base = 'http://localhost:8000/';
+    import Edit from './Edit.vue';
 
     export default {
+        components: {
+            Edit
+        },
         data() {
             return {
                 yarns: []
@@ -83,8 +94,12 @@
         justify-content: space-between;
         text-align: center;
     }
-    .brand, .material, .colour, .weight, .price, .yardage, .hook {
+    .brand, .material, .colour, .weight, .price, .yardage, .hook, .buttons {
         flex: 1;
+    }
+    .buttons {
+        display: flex;
+        gap: 2rem;
     }
     .brand {
         font-weight: bold;
