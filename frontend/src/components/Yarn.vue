@@ -41,7 +41,7 @@
                 <div class="buttons">
                     <Edit :action="edit"/>
                      <!-- Delete button -->
-                    <Edit :action="delete" />
+                    <Delete />
                 </div>
             </div>
         </li> 
@@ -51,11 +51,13 @@
 <script>
     import axios from 'axios';
     const base = 'http://localhost:8000/';
-    import Edit from './Edit.vue';
+    import Edit from './Action/Edit.vue';
+    import Delete from './Action/Delete.vue';
 
     export default {
         components: {
-            Edit
+            Edit,
+            Delete
         },
         data() {
             return {

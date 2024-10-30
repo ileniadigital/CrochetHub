@@ -14,7 +14,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            This is a modal to {{ action }} a yarn.
+            <ActionForm />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -26,7 +26,12 @@
   </template>
   
   <script>
+  import ActionForm from './ActionForm.vue';
+
   export default {
+    components: {
+      ActionForm
+    },
     props: {
       action: {
         type: String,
@@ -55,10 +60,6 @@
         return this.action === 'edit' ? 'Save changes' : 'Delete';
       }
     },
-    mounted() {
-      console.log('Component Mounted:', this.action);
-      console.log(document.querySelector(`#${this.action}Modal`)); // Debugging statement
-    }
-  };
+}
   </script>
   
