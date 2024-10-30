@@ -15,7 +15,7 @@
           </div>
           <div class="modal-body">
             <!-- Pass model-specific fields to ActionForm -->
-            <ActionForm :fields="fields" @submit="handleFormSubmit" />
+            <ActionForm :data="data" @submit="handleFormSubmit" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -33,23 +33,19 @@ import ActionForm from './ActionForm.vue';
 export default {
   data() {
     return {
-      fields: [
-        { name: 'brand', label: 'Brand', type: 'text' },
-        { name: 'material', label: 'Material', type: 'text' },
-        { name: 'colour', label: 'Colour', type: 'text' },
-        { name: 'weight', label: 'Weight', type: 'number' },
-        { name: 'price', label: 'Price', type: 'number' },
-        { name: 'yardage', label: 'Yardage', type: 'number' },
-        { name: 'hookSize', label: 'Hook Size', type: 'number' }
-    ],
+      data: {
+        type: Object,
+        required: true,
+      }
     };
   },
   components: { 
     ActionForm },
   props: {
-  },
-  created() {
-    console.log("Edit:", this.fields);
+    data: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
     handleFormSubmit(formData) {
@@ -57,7 +53,6 @@ export default {
       // Process the form data (e.g., send it to an API or update local state)
     },
     saveChanges() {
-      // Optionally trigger form submission here
     }
   }
 };

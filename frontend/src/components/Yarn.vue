@@ -39,7 +39,7 @@
                 <div class="hook">{{ yarn.hook_size }}mm</div>
                 <!-- Edit button -->
                 <div class="buttons">
-                    <Edit :fields="yarnfields" modelName="Yarn"/>
+                    <Edit :data="yarn" modelName="Yarn"/>
                      <!-- Delete button -->
                     <Delete :id="yarn.id" @deleted="fetchYarns"/>
                 </div>
@@ -62,15 +62,6 @@
         data() {
             return {
                 yarns: [],
-                yarnFields: [
-                    { name: 'brand', label: 'Brand', type: 'text' },
-                    { name: 'material', label: 'Material', type: 'text' },
-                    { name: 'colour', label: 'Colour', type: 'text' },
-                    { name: 'weight', label: 'Weight', type: 'number' },
-                    { name: 'price', label: 'Price', type: 'number' },
-                    { name: 'yardage', label: 'Yardage', type: 'number' },
-                    { name: 'hookSize', label: 'Hook Size', type: 'number' }
-                ],
             };
         },
         created() {
