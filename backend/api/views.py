@@ -13,8 +13,28 @@ def test_api_view(request):
 
 # Yarn API view
 def yarns_api_view(request):
+    if request.method == 'GET':
+        return yarns_get(request)
+    if request.method == 'DELETE':
+        return yarns_delete(request)
+
+def yarns_get(request):
     yarns = list(Yarn.objects.all().values())
     return JsonResponse({'yarns': yarns})
+
+def yarns_delete(request):
+    if request.method == 'DELETE':
+        yarn_id = request.GET.get('id')
+        if not yarn_id:
+            return JsonResponse({'error': 'No yarn id provided'}, status=400)
+        try:
+            yarn = Yarn.objects.get(id=yarn_id)
+            yarn.delete()
+            return JsonResponse({'message': 'Yarn deleted successfully'})
+        except Yarn.DoesNotExist:
+            return JsonResponse({'error': 'Yarn not found'}, status=404)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 # Patterns API view
 def patterns_api_view(request):

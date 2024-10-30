@@ -41,7 +41,7 @@
                 <div class="buttons">
                     <Edit :action="edit"/>
                      <!-- Delete button -->
-                    <Delete />
+                    <Delete :id="yarn.id" />
                 </div>
             </div>
         </li> 
@@ -50,7 +50,7 @@
 
 <script>
     import axios from 'axios';
-    const base = 'http://localhost:8000/';
+    const url = 'http://localhost:8000/';
     import Edit from './Action/Edit.vue';
     import Delete from './Action/Delete.vue';
 
@@ -72,7 +72,7 @@
         methods: {
             async fetchYarns() {
                 try {
-                    const response = await axios.get(`${base}/api/yarns`);
+                    const response = await axios.get(`${url}/api/yarns`);
                     this.yarns = response.data.yarns;
                     this.$emit('yarns', this.yarns); // Emit yarns to Tab
                 } catch (error) {

@@ -18,7 +18,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" @click="confirm">Delete</button>
+                    <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
                 </div>
             </div>
         </div>
@@ -26,13 +26,25 @@
 </template>
 
 <script>
+import axios from 'axios';
+const url = 'http://localhost:8000';
 export default {
-    methods: {
-        confirm() {
-            // TO CHANGE TO USE MODELS
-            // Perform delete action here
-            alert('Item deleted');
+    props: {
+        id: {
+            type: Number,
+            required: true
         }
-    }
+    },
+    methods: {
+        async confirmDelete() {
+            try { 
+                const response = await axios.delete(`${url}/api/yarns`, { params: { id: this.id } }); 
+                console.log('Item deleted', response.data); 
+                this.$emit('deleted'); 
+            } catch (error) {
+                 console.error('There was a problem with the delete request:', error); 
+            }
+        } 
+    } 
 };
 </script>
