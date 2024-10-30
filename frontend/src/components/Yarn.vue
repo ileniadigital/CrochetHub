@@ -41,7 +41,7 @@
                 <div class="buttons">
                     <Edit :action="edit"/>
                      <!-- Delete button -->
-                    <Delete :id="yarn.id" />
+                    <Delete :id="yarn.id" @deleted="fetchYarns"/>
                 </div>
             </div>
         </li> 

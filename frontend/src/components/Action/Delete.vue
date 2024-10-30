@@ -18,7 +18,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
+                    <button type="button" class="btn btn-danger" @click="confirmDelete" data-bs-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>
@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios';
+
 const url = 'http://localhost:8000';
 export default {
     props: {
@@ -40,7 +41,7 @@ export default {
             try { 
                 const response = await axios.delete(`${url}/api/yarns`, { params: { id: this.id } }); 
                 console.log('Item deleted', response.data); 
-                this.$emit('deleted'); 
+                this.$emit('deleted', this.id); 
             } catch (error) {
                  console.error('There was a problem with the delete request:', error); 
             }
