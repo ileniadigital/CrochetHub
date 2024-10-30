@@ -39,10 +39,9 @@
                 <div class="hook">{{ yarn.hook_size }}mm</div>
                 <!-- Edit button -->
                 <div class="buttons">
-                    <Edit :yarn="yarn" />
+                    <Edit :props="action" action="Edit"/>
                      <!-- Delete button -->
-                    <!-- TO REPLACE -->
-                    <Edit :yarn="yarn" />
+                    <Edit :props="action" action="Delete" />
                 </div>
             </div>
         </li> 
