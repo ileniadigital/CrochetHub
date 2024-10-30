@@ -39,7 +39,7 @@
                 <div class="hook">{{ yarn.hook_size }}mm</div>
                 <!-- Edit button -->
                 <div class="buttons">
-                    <Edit :action="edit"/>
+                    <Edit :fields="yarnfields" modelName="Yarn"/>
                      <!-- Delete button -->
                     <Delete :id="yarn.id" @deleted="fetchYarns"/>
                 </div>
@@ -50,7 +50,7 @@
 
 <script>
     import axios from 'axios';
-    const url = 'http://localhost:8000/';
+    const url = 'http://localhost:8000';
     import Edit from './Action/Edit.vue';
     import Delete from './Action/Delete.vue';
 
@@ -62,8 +62,15 @@
         data() {
             return {
                 yarns: [],
-                edit: 'edit',
-                delete: 'delete'
+                yarnFields: [
+                    { name: 'brand', label: 'Brand', type: 'text' },
+                    { name: 'material', label: 'Material', type: 'text' },
+                    { name: 'colour', label: 'Colour', type: 'text' },
+                    { name: 'weight', label: 'Weight', type: 'number' },
+                    { name: 'price', label: 'Price', type: 'number' },
+                    { name: 'yardage', label: 'Yardage', type: 'number' },
+                    { name: 'hookSize', label: 'Hook Size', type: 'number' }
+                ],
             };
         },
         created() {

@@ -1,29 +1,56 @@
 <template>
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+  <form @submit.prevent="submitForm">
+    <div v-for="field in fields" :key="field.name" class="mb-3">
+      <label :for="field.name" class="form-label">{{ field.label }}</label>
+      <input v-if="field.type === 'text'" type="text" :id="field.name" v-model="formData[field.name]" class="form-control" />
+      <input v-else-if="field.type === 'number'" type="number" :id="field.name" v-model="formData[field.name]" class="form-control" />
+      <textarea v-else-if="field.type === 'textarea'" :id="field.name" v-model="formData[field.name]" class="form-control"></textarea>
+    </div>
+  </form>
 </template>
 
 <script>
-    export default{
-        props: {
-            action: {
-                type: String,
-                required: true
-            }
-        },
+export default {
+  props: {
+    fields: {
+      type: Array,
+      required: true,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      formData: {}
     };
+  },
+  created() {
+    // console.log("ActionForm fields:", this.fields);
+    // // Initialize formData based on fields array
+    // this.fields.forEach(field => {
+    //   this.$set(this.formData, field.name, ''); // Initialize each field with an empty value
+    // });
+  },
+  methods: {
+    submitForm() {
+      this.$emit('submit', this.formData); // Emit form data to parent component
+    }
+  }
+};
 </script>
+
+<style>
+    .mb-3 {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1em;
+    }
+    .form-label {
+        text-align: left;
+        margin-bottom: 0.5em;
+        font-weight: bold;
+    }
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
