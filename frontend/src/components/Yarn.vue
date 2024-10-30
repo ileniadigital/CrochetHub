@@ -39,9 +39,9 @@
                 <div class="hook">{{ yarn.hook_size }}mm</div>
                 <!-- Edit button -->
                 <div class="buttons">
-                    <Edit :props="action" action="Edit"/>
+                    <Edit :action="edit"/>
                      <!-- Delete button -->
-                    <Edit :props="action" action="Delete" />
+                    <Edit :action="delete" />
                 </div>
             </div>
         </li> 
@@ -59,7 +59,9 @@
         },
         data() {
             return {
-                yarns: []
+                yarns: [],
+                edit: 'edit',
+                delete: 'delete'
             };
         },
         created() {
