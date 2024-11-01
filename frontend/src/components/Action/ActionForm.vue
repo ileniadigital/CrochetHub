@@ -1,27 +1,15 @@
 <template>
     <form @submit.prevent="submitForm">
         <div v-for="(value, key) in formData" :key="key" class="mb-3">
-            <label :for="key" class="form-label">{{ key.charAt(0).toUpperCase() + key.slice(1) }}</label>
-            <input
-                v-if="typeof value === 'string' && value.length <= 100"
-                type="text"
-                :id="key"
-                v-model="formData[key]"
-                class="form-control"
-            />
-            <input
-                v-else-if="typeof value === 'number'"
-                type="number"
-                :id="key"
-                v-model="formData[key]"
-                class="form-control"
-            />
-            <textarea
-                v-else-if="typeof value === 'string' && value.length > 100"
-                :id="key"
-                v-model="formData[key]"
-                class="form-control"
-            ></textarea>
+            <label :for="key" class="form-label">{{
+                key.charAt(0).toUpperCase() + key.slice(1)
+            }}</label>
+            <input v-if="typeof value === 'string' && value.length <= 100" type="text" :id="key" v-model="formData[key]"
+                class="form-control" />
+            <input v-else-if="typeof value === 'number'" type="number" :id="key" v-model="formData[key]"
+                class="form-control" />
+            <textarea v-else-if="typeof value === 'string' && value.length > 100" :id="key" v-model="formData[key]"
+                class="form-control"></textarea>
         </div>
     </form>
 </template>
@@ -29,32 +17,52 @@
 <script>
 export default {
     props: {
+        edit: {
+            type: Boolean,
+            default: false,
+        },
         data: {
             type: Object,
             required: true,
-            default: () => ({})
+            default: () => ({}),
         },
-        edit: {
-            type: Boolean,
-            default: false
-        }
     },
     data() {
         return {
-            formData: {}
+            formData: {},
         };
     },
     created() {
-        // Initialize `formData` based on `edit` prop
-        for (const key in this.data) {
-                this.formData[key] = this.edit ? this.data[key] : '';
-            }
+        console.log("ADD FORM DATA:", this.formData);
+        this.createFormData();
+        // // Initialize `formData` based on `edit` prop
+        // console.log("this.edit:", this.edit);
+        // console.log("this.data:", this.data);
+        // this.formData = { ...this.data };
+        // console.log("this.formData:", this.formData);
+        // } else {
+        //     for (const key in this.data) {
+        //         this.formData[key] = "";
+        //         console.log("key:", key);
+        //         console.log("this.formData:", this.formData);
+        //     }
+        // }
     },
     methods: {
+        createFormData() {
+            if (this.edit) {
+                this.formData = { ...this.data };
+            } else {
+                for (const key in this.data) {
+                    this.formData[key] = "";
+                }
+            }
+            console.log("this.formData when ", this.edit, ":", this.formData);
+        },
         submitForm() {
-            this.$emit('submit', this.formData);
-        }
-    }
+            this.$emit("submit", this.formData);
+        },
+    },
 };
 </script>
 
@@ -64,11 +72,13 @@ export default {
     flex-direction: column;
     margin-bottom: 1em;
 }
+
 .form-label {
     text-align: left;
     margin-bottom: 0.5em;
     font-weight: bold;
 }
+
 .form-control {
     width: 100%;
     box-sizing: border-box;

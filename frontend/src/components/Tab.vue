@@ -16,15 +16,16 @@
         <li class="nav-item">
             <a class="nav-link" aria-disabled="true">Project</a>
         </li>
-</ul>
+    </ul>
 
-<!-- Data -->
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-        <Yarn :yarns="yarns"/>
+    <!-- Data -->
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+            tabindex="0">
+            <Yarn :yarns="yarns" />
+        </div>
     </div>
-</div>
-<!-- <h3>Yarns</h3> 
+    <!-- <h3>Yarns</h3> 
 <ul> 
     <li v-for="yarn in yarns" :key="yarn.id">{{ yarn.brand }} - {{ yarn.colour }}
     </li> 
@@ -32,26 +33,23 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import Yarn from './Yarn.vue';
-    const base = 'http://localhost:8000/';
+import axios from 'axios';
+import Yarn from './Yarn.vue';
+const base = 'http://localhost:8000/';
 
-    export default {
-        components: {
-            Yarn
+export default {
+    components: {
+        Yarn
+    },
+    data() {
+        return {
+            yarns: []
+        };
+    },
+    methods: {
+        handleYarns(yarns) {
+            this.yarns = yarns;
         },
-        data() {
-            return {
-                yarns: []
-            };
-        },
-        created() {
-           // this.fetchYarns();
-        },
-        methods: {
-            handleYarns(yarns) {
-                this.yarns = yarns;
-            },
-        }
     }
+}
 </script>
