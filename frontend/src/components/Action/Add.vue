@@ -85,28 +85,10 @@ export default {
                 const response = await axios.post(`${url}/api/${this.model}`, formData);
                 this.$emit("added", response.data);
                 console.log("Item added", response.data);
-
-                // Reset the form data
-                this.closeModal();
             } catch (error) {
                 console.error("Error during POST request:", error);
             }
         },
-        closeModal() {
-            const modalElement = this.$refs.addModal;
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-            this.loadedData = {};
-        },
-        // dispose() {
-        //     const modalElement = document.getElementById("addModal");
-        //     const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        //     if (modalInstance) {
-        //         modalInstance.dispose();
-        //     }
-        // },
     },
     computed: {
         computedData() {
@@ -114,16 +96,6 @@ export default {
             return Object.fromEntries(this.fields.map(field => [field, '']));
         }
     },
-    // mounted() {
-    //     // Initialise the modal
-    //     const modal = document.getElementById("addModal");
-    //     modal.addEventListener("hidden.bs.modal", this.dispose);
-    // },
-    // beforeDestroy() {
-    //     // Remove the event listener
-    //     const modal = document.getElementById("addModal");
-    //     modal.removeEventListener("hidden.bs.modal", this.dispose);
-    // }
 };
 </script>
 
@@ -133,5 +105,13 @@ export default {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+}
+
+.modal-backdrop.show {
+    z-index: 100;
+}
+
+.modal.sgow {
+    z-index: 101;
 }
 </style>

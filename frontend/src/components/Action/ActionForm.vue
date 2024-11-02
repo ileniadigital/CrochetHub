@@ -35,6 +35,9 @@ export default {
     created() {
         this.createFormData();
     },
+    beforeDestroy() {
+        this.formData = {};
+    },
     methods: {
         createFormData() {
             if (this.edit) {
@@ -42,8 +45,8 @@ export default {
             } else {
                 for (const key in this.data) {
                     this.formData[key] = "";
-                    console.log("formData:", this.formData);
                 }
+                console.log("formData:", this.formData);
             }
         },
         submitForm() {
