@@ -19,7 +19,12 @@
             <div class="info">
                 <!-- Display data fields based on fields-->
                 <div v-for="field in fields" :key="field" class="data-field item">
-                    {{ item[field] }}
+                    <template v-if="field === 'link'">
+                        <a :href="item[field]">View</a>
+                    </template>
+                    <template v-else>
+                        {{ item[field] }}
+                    </template>
                 </div>
                 <div class="buttons">
                     <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
@@ -61,7 +66,7 @@ export default {
     data() {
         return {
             items: [],
-            loadedData: {}
+            loadedData: Object.fromEntries(this.fields.map(field => [field, '']))
         };
     },
     created() {
