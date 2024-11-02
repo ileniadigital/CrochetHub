@@ -2,10 +2,9 @@
     <div>
         <!-- Action button -->
         <button @click="updateData" class="btn btn-primary" type="button" data-bs-toggle="modal"
-            data-bs-target="#addModal">
-            <i class="bi bi-plus-square-fill">
-                <p>Add new {{ model }}</p>
-            </i>
+            data-bs-target="#addModal" id="addButton">
+            <i class="bi bi-plus-square-fill"></i>
+            <p>Add new {{ model }}</p>
         </button>
 
         <!-- Modal -->
@@ -87,4 +86,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#addButton {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+</style>
