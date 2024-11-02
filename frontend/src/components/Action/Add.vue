@@ -8,7 +8,8 @@
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true"
+            ref="addModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -20,7 +21,7 @@
                         <ActionForm ref="actionForm" :edit="false" :data="computedData" @submit="formSubmit" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-secondary" @click="closeModal" data-bs-dismiss="modal">
                             Close
                         </button>
                         <button type="button" class="btn btn-primary" @click="addData" data-bs-dismiss="modal">
@@ -34,8 +35,11 @@
 </template>
 
 <script>
+import * as bootstrap from 'bootstrap';
+
 import axios from "axios";
 import ActionForm from "./ActionForm.vue";
+
 const url = "http://localhost:8000";
 
 export default {
@@ -81,17 +85,45 @@ export default {
                 const response = await axios.post(`${url}/api/${this.model}`, formData);
                 this.$emit("added", response.data);
                 console.log("Item added", response.data);
+
+                // Reset the form data
+                this.closeModal();
             } catch (error) {
                 console.error("Error during POST request:", error);
             }
         },
+        closeModal() {
+            const modalElement = this.$refs.addModal;
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            this.loadedData = {};
+        },
+        // dispose() {
+        //     const modalElement = document.getElementById("addModal");
+        //     const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        //     if (modalInstance) {
+        //         modalInstance.dispose();
+        //     }
+        // },
     },
     computed: {
         computedData() {
             // Initialise an empty object with the fields as keys
             return Object.fromEntries(this.fields.map(field => [field, '']));
         }
-    }
+    },
+    // mounted() {
+    //     // Initialise the modal
+    //     const modal = document.getElementById("addModal");
+    //     modal.addEventListener("hidden.bs.modal", this.dispose);
+    // },
+    // beforeDestroy() {
+    //     // Remove the event listener
+    //     const modal = document.getElementById("addModal");
+    //     modal.removeEventListener("hidden.bs.modal", this.dispose);
+    // }
 };
 </script>
 

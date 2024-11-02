@@ -67,6 +67,7 @@ export default {
     methods: {
         setActiveTab(tab) {
             this.activeTab = tab;
+            console.log(this.activeTab);
         }
     }
 };

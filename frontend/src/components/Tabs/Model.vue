@@ -94,6 +94,7 @@ export default {
     },
     computed: {
         computedData() {
+            console.log('computedData:', this.loadedData);
             return this.loadedData;
         }
     }
