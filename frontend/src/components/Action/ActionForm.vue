@@ -42,6 +42,7 @@ export default {
             } else {
                 for (const key in this.data) {
                     this.formData[key] = "";
+                    console.log("formData:", this.formData);
                 }
             }
         },

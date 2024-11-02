@@ -19,7 +19,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="saveChanges" data-bs-dismiss="modal">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="saveChanges" data-bs-dismiss="modal">Save
+              changes</button>
           </div>
         </div>
       </div>
@@ -42,11 +43,16 @@ export default {
       edit: true,
     };
   },
-  components: { 
-    ActionForm },
+  components: {
+    ActionForm
+  },
   props: {
     data: {
       type: Object,
+      required: true,
+    },
+    model: {
+      type: String,
       required: true,
     },
   },
@@ -57,17 +63,18 @@ export default {
     },
     formSubmit(formData) {
       // Now you have the form data to send in the PUT request
-      this.submitYarnData(formData);
+      this.submitData(formData);
     },
-    async submitYarnData(formData) {
+    async submitData(formData) {
       try {
         if (!formData.id) {
           console.error('Yarn ID is missing in the data:', this.data);
           return;
         }
-        const response = await axios.put(`${url}/api/yarn/${formData.id}`, formData);
-        this.$emit('edited', response.data); 
-        console.log('Item edited', response.data); 
+        console.log('Submitting data:', this.model, formData);
+        const response = await axios.put(`${url}/api/${this.model}/${formData.id}`, formData);
+        this.$emit('edited', response.data);
+        console.log('Item edited', response.data);
       } catch (error) {
         console.error('Error during PUT request:', error);
       }

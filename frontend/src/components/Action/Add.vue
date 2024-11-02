@@ -17,13 +17,13 @@
                     </div>
                     <div class="modal-body">
                         <!-- Pass default fields to ActionForm when adding new data -->
-                        <ActionForm ref="actionForm" :edit="false" :data="data" @submit="formSubmit" />
+                        <ActionForm ref="actionForm" :edit="false" :data="computedData" @submit="formSubmit" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Close
                         </button>
-                        <button type="button" class="btn btn-primary" @click="addYarn" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-primary" @click="addData" data-bs-dismiss="modal">
                             Add new
                         </button>
                     </div>
@@ -39,16 +39,13 @@ import ActionForm from "./ActionForm.vue";
 const url = "http://localhost:8000";
 
 export default {
-    data() {
-        return {
-            data: {
-                type: Object,
-                required: true,
-            },
-        };
-    },
     components: {
         ActionForm,
+    },
+    data() {
+        return {
+            loadedData: {},
+        };
     },
     props: {
         model: {
@@ -59,23 +56,29 @@ export default {
             type: Object,
             required: true,
         },
+        fields: {
+            type: Array,
+            required: true,
+        },
     },
     methods: {
         updateData() {
             console.log("updating data");
+            console.log("loadedData:", this.data);
             this.$emit('update');
         },
-        async addYarn() {
+        async addData() {
             // Call the submitForm method of the ActionForm component
             this.$refs.actionForm.submitForm();
         },
         formSubmit(formData) {
             // Now you have the form data to send in the POST request
-            this.submitYarnData(formData);
+            this.submitData(formData);
         },
-        async submitYarnData(formData) {
+        async submitData(formData) {
             try {
-                const response = await axios.post(`${url}/api/yarn`, formData);
+                console.log(`${url}/api/${this.model}`);
+                const response = await axios.post(`${url}/api/${this.model}`, formData);
                 this.$emit("added", response.data);
                 console.log("Item added", response.data);
             } catch (error) {
@@ -83,6 +86,12 @@ export default {
             }
         },
     },
+    computed: {
+        computedData() {
+            // Initialise an empty object with the fields as keys
+            return Object.fromEntries(this.fields.map(field => [field, '']));
+        }
+    }
 };
 </script>
 
