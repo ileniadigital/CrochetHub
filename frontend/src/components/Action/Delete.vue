@@ -4,7 +4,7 @@
     <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
         <i class="bi bi-trash-fill"></i>
     </button>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
         <div class="modal-dialog">
@@ -18,7 +18,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" @click="confirmDelete" data-bs-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btn-danger" @click="confirmDelete"
+                        data-bs-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>
@@ -36,16 +37,17 @@ export default {
             required: true
         }
     },
+    emits: ['deleted'],
     methods: {
         async confirmDelete() {
-            try { 
-                const response = await axios.delete(`${url}/api/yarn`, { params: { id: this.id } }); 
-                console.log('Item deleted', response.data); 
-                this.$emit('deleted', this.id); 
+            try {
+                const response = await axios.delete(`${url}/api/yarn/${this.id}/delete`);
+                console.log('Item deleted', response.data);
+                this.$emit('deleted', this.id);
             } catch (error) {
-                 console.error('There was a problem with the delete request:', error); 
+                console.error('There was a problem with the delete request:', error);
             }
-        } 
-    } 
+        }
+    }
 };
 </script>

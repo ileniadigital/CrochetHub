@@ -71,8 +71,8 @@ export default {
           console.error('Yarn ID is missing in the data:', this.data);
           return;
         }
-        console.log('Submitting data:', this.model, formData);
-        const response = await axios.put(`${url}/api/${this.model}/${formData.id}`, formData);
+
+        const response = await axios.put(`${url}/api/${this.model}/${formData.id}/update`, formData);
         this.$emit('edited', response.data);
         console.log('Item edited', response.data);
       } catch (error) {
