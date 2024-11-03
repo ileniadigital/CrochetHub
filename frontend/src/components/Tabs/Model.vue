@@ -1,6 +1,6 @@
 <template>
     <!-- Add modal -->
-    <!-- <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" /> -->
+    <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" />
 
     <!-- Headings -->
     <!-- Bootstrap styling -->
@@ -86,9 +86,8 @@ export default {
                 const json = await response.json();
                 // console.log(json);
                 const model = `${this.model}s`;
-                console.log(model);
                 this.items = json[model];
-                console.log("Fetched JSON data", this.items);
+                // console.log("Fetched JSON data", this.items);
 
                 // Initialize loadedData based on fields
                 this.loadedData = Object.fromEntries(this.fields.map(field => [field, '']));

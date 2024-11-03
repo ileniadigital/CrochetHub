@@ -36,11 +36,7 @@
 
 <script>
 import * as bootstrap from 'bootstrap';
-
-import axios from "axios";
 import ActionForm from "./ActionForm.vue";
-
-const url = "http://localhost:8000";
 
 export default {
     components: {
@@ -80,9 +76,17 @@ export default {
             this.submitData(formData);
         },
         async submitData(formData) {
+            const url = "http://localhost:8000";
+
             try {
                 console.log(`${url}/api/${this.model}`);
-                const response = await axios.post(`${url}/api/${this.model}`, formData);
+                const response = await fetch(`${url}/api/${this.model}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                });
                 this.$emit("added", response.data);
                 console.log("Item added", response.data);
             } catch (error) {
