@@ -70,7 +70,7 @@ export default {
           console.error('Yarn ID is missing in the data:', this.data);
           return;
         }
-        const response = await fetch(`${url}/api/${this.model}/${formData.id}/update`, {
+        const response = await fetch(`${url}/api/${this.model}/${formData.id}/update/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'

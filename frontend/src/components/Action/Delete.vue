@@ -27,11 +27,12 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-const url = 'http://localhost:8000';
 export default {
     props: {
+        model: {
+            type: String,
+            required: true
+        },
         id: {
             type: Number,
             required: true
@@ -40,10 +41,18 @@ export default {
     emits: ['deleted'],
     methods: {
         async confirmDelete() {
+            const url = 'http://localhost:8000';
             try {
-                console.log(`${url}/api/yarn/${this.id}/delete/`);
-                const response = await axios.delete(`${url}/api/yarn/${this.id}/delete/`);
-                console.log('Item deleted', response.data);
+                console.log(`${url}/api/${this.model}/${this.id}/delete/`);
+                const response = await fetch(`${url}/api/${this.model}/${this.id}/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(null),
+                }
+                );
+                console.log('Item deleted', response);
                 this.$emit('deleted', this.id);
             } catch (error) {
                 console.error('There was a problem with the delete request:', error);

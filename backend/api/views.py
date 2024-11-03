@@ -18,8 +18,6 @@ def yarn_api_view(request):
         return yarn_get(request)
     if request.method == 'POST':
         return yarn_post(request)
-    if request.method == 'DELETE':
-        return yarn_delete(request)
 
 def yarn_get(request):
     yarns = list(Yarn.objects.all().values())
@@ -76,10 +74,11 @@ def yarn_put(request,id):
 
 def yarn_delete(request, id):
     if request.method=='DELETE':
-        yarn= get_object_or_404(Yarn, id=id)
+        yarn= Yarn.objects.get(id=id)
         yarn.delete()
         return JsonResponse({"message": "Yarn deleted succesfully"})
     return JsonResponse({"error": "Invalid"}, status=405)
+
  # Pattern API view
 def pattern_api_view(request):
     if request.method == 'GET':
