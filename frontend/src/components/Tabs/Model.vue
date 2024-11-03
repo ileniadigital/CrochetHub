@@ -27,8 +27,8 @@
                     </template>
                 </div>
                 <div class="buttons">
-                    <!-- <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
-                    <Delete :model="model" :id="item.id" @deleted="fetchData" /> -->
+                    <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
+                    <!-- <Delete :model="model" :id="item.id" @deleted="fetchData" /> -->
                 </div>
             </div>
         </li>
