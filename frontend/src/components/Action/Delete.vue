@@ -1,25 +1,23 @@
 <template>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <!-- Action button -->
-    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="bi bi-trash-fill"></i>
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" @click="confirmDelete"
-                        data-bs-dismiss="modal">Delete</button>
+    <div>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="closeModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="closeModal">Close</button>
+                        <button type="button" class="btn btn-danger" @click="deleteItem"
+                            data-bs-dismiss="modal">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,32 +29,36 @@ export default {
     props: {
         model: {
             type: String,
-            required: true
+            required: true,
         },
         id: {
             type: Number,
-            required: true
-        }
+            required: true,
+        },
     },
-    emits: ['deleted'],
     methods: {
-        async confirmDelete() {
+        async deleteItem() {
             const url = 'http://localhost:8000';
             try {
-                console.log(`${url}/api/${this.model}/${this.id}/delete/`);
                 const response = await fetch(`${url}/api/${this.model}/${this.id}/delete/`, {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(null),
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
                 }
-                );
-                console.log('Item deleted', response);
-                this.$emit('deleted', this.id);
+
+                this.$emit('deleted');
+                console.log('Item deleted');
             } catch (error) {
-                console.error('There was a problem with the delete request:', error);
+                console.error('Error during DELETE request:', error);
             }
+        },
+        closeModal() {
+            this.$emit('close');
         }
     }
 };

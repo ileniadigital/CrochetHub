@@ -3,7 +3,7 @@
         <div v-for="(value, key) in formData" :key="key" class="mb-3">
             <label :for="key" class="form-label">{{
                 key.charAt(0).toUpperCase() + key.slice(1)
-                }}</label>
+            }}</label>
             <input v-if="typeof value === 'string' && value.length <= 100" type="text" :id="key" v-model="formData[key]"
                 class="form-control" />
             <input v-else-if="typeof value === 'number'" type="number" :id="key" v-model="formData[key]"
@@ -48,6 +48,7 @@ export default {
                 }
                 console.log("formData:", this.formData);
             }
+            console.log("Printing data:", this.formData);
         },
         submitForm() {
             this.$emit("submit", this.formData);

@@ -3,7 +3,6 @@
     <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" />
 
     <!-- Headings -->
-    <!-- Bootstrap styling -->
     <div class="container text-center">
         <div class="row">
             <div class="col" v-for="(header, index) in headers" :key="index">
@@ -17,7 +16,6 @@
     <ul class="list-group">
         <li class="list-group-item" v-for="(item, index) in items" :key="item.id || index">
             <div class="info">
-                <!-- Display data fields based on fields-->
                 <div v-for="field in fields" :key="field" class="data-field item">
                     <template v-if="field === 'link'">
                         <a :href="item[field]">View</a>
@@ -27,18 +25,32 @@
                     </template>
                 </div>
                 <div class="buttons">
-                    <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
-                    <Delete :model="model" :id="item.id" @deleted="fetchData" />
+                    <button @click="openEditModal(item)" class="btn btn-primary" type="button">
+                        <i class="bi bi-pencil-square">Edit</i>
+                    </button>
+                    <button @click="openDeleteModal(item.id)" class="btn btn-danger" type="button">
+                        <i class="bi bi-trash">Delete</i>
+                    </button>
                 </div>
             </div>
         </li>
     </ul>
+
+    <!-- Conditionally render the Edit component -->
+    <Edit ref="editModal" v-if="activeItem" :model="model" :data="activeItem" @edited="fetchData"
+        @close="closeEditModal" />
+
+    <!-- Conditionally render the Delete component -->
+    <Delete ref="deleteModal" v-if="activeDeleteId" :model="model" :id="activeDeleteId" @deleted="fetchData"
+        @close="closeDeleteModal" />
 </template>
 
 <script>
 import Add from '../Action/Add.vue';
 import Edit from '../Action/Edit.vue';
 import Delete from '../Action/Delete.vue';
+import * as bootstrap from 'bootstrap';
+import { nextTick } from 'vue';
 
 export default {
     components: {
@@ -63,7 +75,9 @@ export default {
     data() {
         return {
             items: [],
-            loadedData: Object.fromEntries(this.fields.map(field => [field, '']))
+            loadedData: Object.fromEntries(this.fields.map(field => [field, ''])),
+            activeItem: null,
+            activeDeleteId: null,
         };
     },
     created() {
@@ -84,25 +98,40 @@ export default {
                     throw new Error(`Response status: ${response.status}`);
                 }
                 const json = await response.json();
-                // console.log(json);
                 const model = `${this.model}s`;
                 this.items = json[model];
-                // console.log("Fetched JSON data", this.items);
 
-                // Initialize loadedData based on fields
                 this.loadedData = Object.fromEntries(this.fields.map(field => [field, '']));
                 this.$emit(`${this.model}`, this.items);
             } catch (error) {
                 console.error(`Error fetching ${this.model}:`, error);
             }
         },
-        updateData() {
-            this.loadedData = { ...this.items[0] };
+        openEditModal(item) {
+            this.activeItem = item;
+            this.$nextTick(() => {
+                const modalElement = document.getElementById('editModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            });
+        },
+        closeEditModal() {
+            this.activeItem = null;
+        },
+        openDeleteModal(id) {
+            this.activeDeleteId = id;
+            this.$nextTick(() => {
+                const modalElement = document.getElementById('deleteModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            });
+        },
+        closeDeleteModal() {
+            this.activeDeleteId = null;
         }
     },
     computed: {
         computedData() {
-            console.log('computedData:', this.loadedData);
             return this.loadedData;
         }
     }
