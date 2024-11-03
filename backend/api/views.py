@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from .models import Yarn
 from .models import Pattern as pattern
@@ -60,20 +60,26 @@ def yarn_put(request,id):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
-def yarn_delete(request):
-    if request.method == 'DELETE':
-        yarn_id = request.GET.get('id')
-        if not yarn_id:
-            return JsonResponse({'error': 'No yarn id provided'}, status=400)
-        try:
-            yarn = Yarn.objects.get(id=yarn_id)
-            yarn.delete()
-            return JsonResponse({'message': 'Yarn deleted successfully'})
-        except Yarn.DoesNotExist:
-            return JsonResponse({'error': 'Yarn not found'}, status=404)
-    else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+# def yarn_delete(request):
+#     if request.method == 'DELETE':
+#         yarn_id = request.GET.get('id')
+#         if not yarn_id:
+#             return JsonResponse({'error': 'No yarn id provided'}, status=400)
+#         try:
+#             yarn = Yarn.objects.get(id=yarn_id)
+#             yarn.delete()
+#             return JsonResponse({'message': 'Yarn deleted successfully'})
+#         except Yarn.DoesNotExist:
+#             return JsonResponse({'error': 'Yarn not found'}, status=404)
+#     else:
+#         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+def yarn_delete(request, id):
+    if request.method=='DELETE':
+        yarn= get_object_or_404(Yarn, id=id)
+        yarn.delete()
+        return JsonResponse({"message": "Yarn deleted succesfully"})
+    return JsonResponse({"error": "Invalid"}, status=405)
  # Pattern API view
 def pattern_api_view(request):
     if request.method == 'GET':

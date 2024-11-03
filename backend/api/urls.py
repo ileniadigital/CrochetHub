@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import path
 from .views import *
 
+# CHANGE URLS SO THAT WHEN IT'S UPDATE AND DELETE IT CALLS A FUNCTION THAT CHECKS IF THE METHOD IS UPDATE OR DELETE
+# NEED TO REMOVE THE /update stuff
 
 urlpatterns = [
     # API entry points should be defined here
@@ -25,7 +27,7 @@ urlpatterns = [
     path('yarn/<int:id>/delete', yarn_delete, name='yarnDelete'),
     path('pattern', pattern_api_view, name='pattern'),
     path('pattern/<int:id>/update', pattern_put, name='patternUpdate'),
-    path('pattern/<int:id>/delete', pattern_delete, name='patternDelete'),
+    path('pattern/<int:id>/delete/', pattern_delete, name='patternDelete'),
     path('user', user_api_view, name='user'),
     path('user/<int:id>/update', user_put, name='userUpdate'),
     path('user/<int:id>/delete', user_delete, name='userDelete'),

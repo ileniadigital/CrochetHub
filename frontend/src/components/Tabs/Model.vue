@@ -1,6 +1,6 @@
 <template>
     <!-- Add modal -->
-    <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" />
+    <!-- <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" /> -->
 
     <!-- Headings -->
     <!-- Bootstrap styling -->
@@ -15,7 +15,7 @@
 
     <!-- Render data -->
     <ul class="list-group">
-        <li class="list-group-item" v-for="item in items" :key="item.id">
+        <li class="list-group-item" v-for="(item, index) in items" :key="item.id || index">
             <div class="info">
                 <!-- Display data fields based on fields-->
                 <div v-for="field in fields" :key="field" class="data-field item">
@@ -27,8 +27,8 @@
                     </template>
                 </div>
                 <div class="buttons">
-                    <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
-                    <Delete :model="model" :id="item.id" @deleted="fetchData" />
+                    <!-- <Edit :model="model" :data="item" :headers="headers" @edited="fetchData" />
+                    <Delete :model="model" :id="item.id" @deleted="fetchData" /> -->
                 </div>
             </div>
         </li>
@@ -36,12 +36,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Add from '../Action/Add.vue';
 import Edit from '../Action/Edit.vue';
 import Delete from '../Action/Delete.vue';
-
-const url = 'http://localhost:8000';
 
 export default {
     components: {
@@ -74,12 +71,24 @@ export default {
     },
     methods: {
         async fetchData() {
+            const url = 'http://localhost:8000';
             try {
-                console.log(`${url}/api/${this.model}`);
-                const response = await axios.get(`${url}/api/${this.model}`);
-                let model = `${this.model}s`;
-                this.items = response.data[model];
-                console.log(`Fetched ${this.model}:`, this.items);
+                const response = await fetch(`${url}/api/${this.model}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const json = await response.json();
+                // console.log(json);
+                const model = `${this.model}s`;
+                console.log(model);
+                this.items = json[model];
+                console.log("Fetched JSON data", this.items);
 
                 // Initialize loadedData based on fields
                 this.loadedData = Object.fromEntries(this.fields.map(field => [field, '']));

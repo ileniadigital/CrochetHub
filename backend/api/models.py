@@ -27,15 +27,15 @@ class Yarn(models.Model):
     '''Yarn Model to store yarn information'''
     id = models.AutoField(primary_key=True)
     brand = models.CharField(max_length=255)
-    weight = models.IntegerField()
     colour = models.CharField(max_length=50, choices=Colour.choices)
     material = models.CharField(max_length=50, choices=Material.choices)
+    weight = models.IntegerField()
     price = models.FloatField()
     yardage = models.IntegerField()
     hook_size = models.FloatField()
 
     def __str__(self): 
-        return f"{self.brand} {self.colour} {self.material}"
+        return f"{self.brand} {self.colour} {self.material} {self.weight}"
 
 
 class Pattern(models.Model):
