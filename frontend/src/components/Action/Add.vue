@@ -71,9 +71,10 @@ export default {
             const url = "http://localhost:8000";
 
             try {
+                console.log("Data to submit:", formData);
                 const constructURL = `${url}/api/${this.model}/`;
                 console.log(constructURL);
-                const response = await fetch(constructURL, {
+                const response = await fetch(`${url}/api/${this.model}/`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

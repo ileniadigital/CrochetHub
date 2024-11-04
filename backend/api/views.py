@@ -314,8 +314,8 @@ def patternyarn_get(request):
 def patternyarn_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        pattern_id= data.get('pattern_id')
-        yarn_id= data.get('yarn_id')
+        pattern_id= data.get('pattern')
+        yarn_id= data.get('yarn')
         quantity= data.get('quantity')
 
         pattern= get_object_or_404(Pattern, id=pattern_id)
@@ -326,6 +326,7 @@ def patternyarn_post(request):
             yarn=yarn,
             quantity=quantity
         )
+        logger.debug(f"PatternYarn created: {patternyarn_obj}")
         return JsonResponse({'message': 'PatternYarn created successfully'})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
@@ -335,8 +336,20 @@ def patternyarn_put(request, id):
         try:
             patternyarn_obj = PatternYarn.objects.get(id=id)
             data = json.loads(request.body)
-            patternyarn_obj.pattern_id = data.get('pattern_id', patternyarn_obj.pattern_id)
-            patternyarn_obj.yarn_id = data.get('yarn_id', patternyarn_obj.yarn_id)
+            pattern_id = data.get('pattern_id')
+            yarn_id = data.get('yarn_id')
+            quantity = data.get('quantity')
+
+            if not all([pattern_id, yarn_id, quantity]):
+                return JsonResponse({'error': 'Missing required fields'}, status=400)
+
+
+            pattern = get_object_or_404(Pattern, id=pattern_id)
+            yarn = get_object_or_404(Yarn, id=yarn_id)
+
+            patternyarn_obj.pattern = pattern
+            patternyarn_obj.yarn = yarn
+            patternyarn_obj.quantity = quantity
             patternyarn_obj.save()
             return JsonResponse({'message': 'PatternYarn updated successfully'})
         except PatternYarn.DoesNotExist:

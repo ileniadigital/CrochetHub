@@ -70,14 +70,15 @@ export default {
             if (this.edit) {
                 this.formData = { ...this.data };
             } else {
+                this.formData = { ...this.data };
                 for (const key in this.data) {
                     this.formData[key] = "";
                 }
             }
+            console.log("Form data created:", this.formData);
         },
         async fetchOptions() {
-            console.log(`Fetching options for model: ${this.model}`);
-            // Check if model matches what you expect for fetching yarns and patterns
+            // Check if model is pattern or patternyarn
             if (this.model.toLowerCase() === 'project' || this.model.toLowerCase() === 'patternyarn') {
                 await this.fetchYarnOptions();
                 await this.fetchPatternOptions();

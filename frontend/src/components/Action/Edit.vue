@@ -11,7 +11,7 @@
           </div>
           <div class="modal-body">
             <!-- Pass fields to ActionForm -->
-            <ActionForm ref="actionForm" :edit="true" :data="data" @submit="formSubmit" />
+            <ActionForm ref="actionForm" :model="model" :edit="true" :data="data" @submit="formSubmit" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">Close</button>
@@ -66,6 +66,7 @@ export default {
           console.error('Yarn ID is missing in the data:', this.data);
           return;
         }
+        console.log(`${url}/api/${this.model}/${formData.id}/update/`);
         const response = await fetch(`${url}/api/${this.model}/${formData.id}/update/`, {
           method: 'PUT',
           headers: {
