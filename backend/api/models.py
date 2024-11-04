@@ -46,10 +46,15 @@ class Pattern(models.Model):
     published = models.DateField()
     link = models.URLField()
     transcript = models.TextField()
-    yarns = models.ManyToManyField(Yarn, through='PatternYarn')
 
     def __str__(self): 
         return f"{self.title}"
+
+# class PatternYarn(models.Model):
+#     '''PatternYarn Model to store yarn needed for a pattern'''
+#     pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
+#     yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE)
+#     quantity = models.IntegerField()
 
 
 class User(models.Model):
@@ -62,20 +67,29 @@ class User(models.Model):
         return f"{self.username}"
 
 
-class PatternYarn(models.Model):
-    '''PatternYarn Model to store yarn needed for a pattern'''
-    pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-    yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-
-
 class Project(models.Model):
-    '''Project Model to store project with materials and pattern'''
+    """Project Model to store project with materials and pattern"""
+    id= models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE, related_name="projects")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="projects")
     date_started = models.DateField()
     finished = models.BooleanField(default=False)
-    date_finished = models.DateField()
+    date_finished = models.DateField(null=True, blank=True)
     notes = models.TextField()
+    yarns = models.ManyToManyField(Yarn, through='PatternYarn', related_name="projects")
+
+    def __str__(self):
+        return f"{self.title} by {self.user.username}"
+
+
+class PatternYarn(models.Model):
+    """ProjectYarn Model to store yarn quantities needed for a project"""
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_yarns")
+    pattern= models.ForeignKey(Pattern, on_delete=models.CASCADE, related_name="pattern_yarns", default=1)
+    yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE, related_name="yarn_patterns")
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} x {self.yarn} for {self.project}"

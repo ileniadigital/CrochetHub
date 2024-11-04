@@ -97,6 +97,7 @@ export default {
                 }
                 const json = await response.json();
                 const model = `${this.model}s`;
+                console.log(json[model]);
                 this.items = json[model];
 
                 this.loadedData = Object.fromEntries(this.fields.map(field => [field, '']));

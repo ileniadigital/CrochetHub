@@ -1,3 +1,4 @@
+from venv import logger
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from .models import Yarn
@@ -228,9 +229,54 @@ def patternyarn_api_view(request):
     if request.method == 'DELETE':
         return patternyarn_delete(request)
 
+def get_yarn_by_id(yarn_id):
+    try:
+        yarn = Yarn.objects.get(id=yarn_id)
+        return {
+            'brand': yarn.brand,
+            'colour': yarn.colour,
+            'material': yarn.material,
+            'weight': yarn.weight,
+            'price': yarn.price,
+            'yardage': yarn.yardage,
+        }
+    except Yarn.DoesNotExist:
+        return None
+
+def get_pattern_by_id(pattern_id):
+    try:
+        pattern = Pattern.objects.get(id=pattern_id)
+        return {
+            'title': pattern.title,
+            'description': pattern.description,
+            'published': pattern.published,
+            'link': pattern.link,
+            'transcript': pattern.transcript,
+        }
+    except Pattern.DoesNotExist:
+        return None
+    
 def patternyarn_get(request):
-    patternyarns = list(PatternYarn.objects.all().values())
-    return JsonResponse({'patternyarns': patternyarns})
+    try:
+        patternyarns = PatternYarn.objects.all()
+        patternyarn_list = []
+        for patternyarn in patternyarns:
+            pattern = get_pattern_by_id(patternyarn.project_id)
+            yarn = get_yarn_by_id(patternyarn.yarn_id)
+            if pattern and yarn:
+                patternyarn_list.append({
+                    'id': patternyarn.id,
+                    'project_id': patternyarn.project_id,
+                    'quantity': patternyarn.quantity,
+                    'pattern': pattern,
+                    'yarn': yarn,
+                })
+        return JsonResponse({'patternyarns': patternyarn_list})
+    except Exception as e:
+        logger.error(e)
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 
 def patternyarn_post(request):
     if request.method == 'POST':
