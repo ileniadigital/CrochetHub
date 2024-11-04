@@ -193,27 +193,28 @@ def project_get(request):
     projects = Project.objects.all()
     project_list = []
     for project in projects:
-        user_info = {
-            'id': project.user.id,
-            'username': project.user.username,
-            'email': project.user.email,
-        }
-        pattern_info = {
-            'id': project.pattern.id,
-            'title': project.pattern.title,
-            'link': project.pattern.link,
-        }
+        yarns= PatternYarn.objects.filter(pattern=project.pattern)
+        yarn_info=[
+            {
+                'name': f"{yarn.yarn.brand} {yarn.yarn.colour} {yarn.yarn.material} {yarn.quantity}",
+            }
+            for yarn in yarns
+        ]
         project_info = {
             'id': project.id,
             'title': project.title,
             'description': project.description,
-            'pattern': pattern_info,
-            'user': user_info,
+            'pattern_id': project.pattern.id,
+            'pattern': project.pattern.title,
+            'user_id': project.user.id,
+            'user': project.user.username,
             'date_started': project.date_started,
             'finished': project.finished,
             'date_finished': project.date_finished,
             'notes': project.notes,
-            # Include any other fields as needed
+            # 'yarn_ids': yarn_ids,
+            'yarns': yarn_info
+
         }
         project_list.append(project_info)
     return JsonResponse({'projects': project_list})

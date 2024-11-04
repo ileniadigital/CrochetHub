@@ -20,6 +20,17 @@
         <li class="list-group-item" v-for="(item, index) in items" :key="item.id">
             <div class="info">
                 <div v-for="field in fields" :key="field" class="data-field item">
+
+                    <!-- Template for yarn field in project -->
+                    <template v-if="field === 'yarns'">
+                        <ul>
+                            <li v-for="yarn in item.yarns" :key="yarn.id">
+                                {{ yarn.name }}
+                            </li>
+                        </ul>
+                    </template>
+
+                    <!-- Template for link field -->
                     <template v-if="field === 'link'">
                         <a :href="item[field]">View</a>
                     </template>

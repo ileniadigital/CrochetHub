@@ -49,8 +49,8 @@
         <!-- Project -->
         <div class="tab-pane fade" :class="{ 'show active': activeTab === 'project' }" v-if="activeTab === 'project'">
             <Model ref="project" :model="'project'"
-                :fields="['title', 'description', 'pattern', 'user', 'date_started', 'finished', 'date_finished', 'notes']"
-                :headers="['Title', 'Description', 'Pattern', 'User', 'Date Started', 'Finished', 'Date Finished', 'Notes']" />
+                :fields="['title', 'description', 'pattern', 'user', 'date_started', 'finished', 'date_finished', 'notes', 'yarns']"
+                :headers="['Title', 'Description', 'Pattern', 'User', 'Date Started', 'Finished', 'Date Finished', 'Notes', 'Yarns']" />
         </div>
     </div>
 </template>

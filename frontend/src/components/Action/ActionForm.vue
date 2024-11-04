@@ -3,10 +3,10 @@
         <div v-for="(value, key) in formData" :key="key" class="mb-3">
             <label :for="key" class="form-label">{{
                 key.charAt(0).toUpperCase() + key.slice(1)
-                }}</label>
+            }}</label>
 
             <!-- Dropdowns for yarn and pattern -->
-            <!-- Specific for PatternYarn -->
+            <!-- Pattern dropdown -->
             <select v-if="key === 'yarn'" v-model="formData[key]" class="form-control">
                 <option value="" disabled>Select Yarn</option>
                 <option v-for="yarn in yarnOptions" :key="yarn.id" :value="yarn.id">
@@ -14,6 +14,7 @@
                 </option>
             </select>
 
+            <!-- Pattern dropdown -->
             <select v-else-if="key === 'pattern'" v-model="formData[key]" class="form-control">
                 <option value="" disabled>Select Pattern</option>
                 <option v-for="pattern in patternOptions" :key="pattern.id" :value="pattern.id">
@@ -21,7 +22,20 @@
                 </option>
             </select>
 
+            <!-- User dropdown -->
+            <select v-else-if="key === 'user'" v-model="formData[key]" class="form-control">
+                <option value="" disabled>Select User</option>
+                <option v-for="user in userOptions" :key="user.id" :value="user.id">
+                    {{ user.username }}
+                </option>
+            </select>
+
+            <!-- Date input for date fields -->
+            <input v-else-if="/date/i.test(key)" type="date" :id="key" v-model="formData[key]" class="form-control" />
             <!-- Other inputs for string, number, and textarea fields -->
+            <!-- Render checkbox for the Finished fields -->
+            <input v-else-if="key === 'finished'" type="checkbox" :id="key" v-model="formData[key]"
+                class="form-check-input" />
             <input v-else-if="typeof value === 'string' && value.length <= 100" type="text" :id="key"
                 v-model="formData[key]" class="form-control" />
             <input v-else-if="typeof value === 'number'" type="number" :id="key" v-model="formData[key]"
@@ -54,6 +68,7 @@ export default {
             formData: {},
             yarnOptions: [],
             patternOptions: [],
+            userOptions: [],
         };
     },
     created() {
@@ -83,6 +98,7 @@ export default {
             if (this.model.toLowerCase() === 'project' || this.model.toLowerCase() === 'patternyarn') {
                 await this.fetchYarnOptions();
                 await this.fetchPatternOptions();
+                await this.fetchUserOptions();
             }
         },
         async fetchYarnOptions() {
@@ -105,6 +121,17 @@ export default {
                 console.log("Pattern options fetched:", this.patternOptions);
             } catch (error) {
                 console.error("Failed to fetch pattern options:", error);
+            }
+        },
+        async fetchUserOptions() {
+            try {
+                console.log("Fetching user options...");
+                const response = await fetch('http://localhost:8000/api/user');
+                const data = await response.json();
+                this.userOptions = data.users;
+                console.log("User options fetched:", this.userOptions);
+            } catch (error) {
+                console.error("Failed to fetch user options:", error);
             }
         },
         submitForm() {
