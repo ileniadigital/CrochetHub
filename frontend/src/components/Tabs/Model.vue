@@ -25,10 +25,10 @@
                     </template>
                 </div>
                 <div class="buttons">
-                    <button @click="openEditModal(item)" class="btn btn-primary" type="button">
+                    <button @click="openEdit(item)" class="btn btn-primary" type="button">
                         <i class="bi bi-pencil-square">Edit</i>
                     </button>
-                    <button @click="openDeleteModal(item.id)" class="btn btn-danger" type="button">
+                    <button @click="openDelete(item.id)" class="btn btn-danger" type="button">
                         <i class="bi bi-trash">Delete</i>
                     </button>
                 </div>
@@ -37,12 +37,11 @@
     </ul>
 
     <!-- Conditionally render the Edit component -->
-    <Edit ref="editModal" v-if="activeItem" :model="model" :data="activeItem" @edited="fetchData"
-        @close="closeEditModal" />
+    <Edit ref="editModal" v-if="activeItem" :model="model" :data="activeItem" @edited="onEdit" @close="closeEdit" />
 
     <!-- Conditionally render the Delete component -->
     <Delete ref="deleteModal" v-if="activeDeleteId" :model="model" :id="activeDeleteId" @deleted="fetchData"
-        @close="closeDeleteModal" />
+        @close="closeDelete" />
 </template>
 
 <script>
@@ -50,7 +49,6 @@ import Add from '../Action/Add.vue';
 import Edit from '../Action/Edit.vue';
 import Delete from '../Action/Delete.vue';
 import * as bootstrap from 'bootstrap';
-import { nextTick } from 'vue';
 
 export default {
     components: {
@@ -107,18 +105,22 @@ export default {
                 console.error(`Error fetching ${this.model}:`, error);
             }
         },
-        openEditModal(item) {
-            this.activeItem = item;
+        openEdit(item) {
+            this.activeItem = { ...item };
             this.$nextTick(() => {
                 const modalElement = document.getElementById('editModal');
                 const modal = new bootstrap.Modal(modalElement);
                 modal.show();
             });
         },
-        closeEditModal() {
+        closeEdit() {
             this.activeItem = null;
         },
-        openDeleteModal(id) {
+        onEdit() {
+            this.fetchData();
+            this.closeEdit();
+        },
+        openDelete(id) {
             this.activeDeleteId = id;
             this.$nextTick(() => {
                 const modalElement = document.getElementById('deleteModal');
@@ -126,7 +128,7 @@ export default {
                 modal.show();
             });
         },
-        closeDeleteModal() {
+        closeDeleteM() {
             this.activeDeleteId = null;
         }
     },
