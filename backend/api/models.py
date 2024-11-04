@@ -46,6 +46,7 @@ class Pattern(models.Model):
     published = models.DateField()
     link = models.URLField()
     transcript = models.TextField()
+    yarns= models.ManyToManyField(Yarn, through='PatternYarn', related_name="patterns")
 
     def __str__(self): 
         return f"{self.title}"
@@ -78,7 +79,7 @@ class Project(models.Model):
     finished = models.BooleanField(default=False)
     date_finished = models.DateField(null=True, blank=True)
     notes = models.TextField()
-    yarns = models.ManyToManyField(Yarn, through='PatternYarn', related_name="projects")
+    # yarns = models.ManyToManyField(Yarn, through='PatternYarn', related_name="projects")
 
     def __str__(self):
         return f"{self.title} by {self.user.username}"
@@ -86,10 +87,9 @@ class Project(models.Model):
 
 class PatternYarn(models.Model):
     """ProjectYarn Model to store yarn quantities needed for a project"""
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_yarns")
     pattern= models.ForeignKey(Pattern, on_delete=models.CASCADE, related_name="pattern_yarns", default=1)
     yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE, related_name="yarn_patterns")
     quantity = models.IntegerField()
 
     def __str__(self):
-        return f"{self.quantity} x {self.yarn} for {self.project}"
+        return f"{self.quantity} x {self.yarn} for {self.pattern}"

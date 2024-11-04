@@ -193,20 +193,29 @@ def project_get(request):
     projects = Project.objects.all()
     project_list = []
     for project in projects:
-        user = get_user_by_id(project.user_id)
-        pattern = get_pattern_by_id(project.pattern_id)
-        if user and pattern:
-            project_list.append({
-                'id': project.id,
-                'title': project.title,
-                'description': project.description,
-                'date_started': project.date_started,
-                'finished': project.finished,
-                'date_finished': project.date_finished,
-                'notes': project.notes,
-                'user': user,
-                'pattern': pattern,
-            })
+        user_info = {
+            'id': project.user.id,
+            'username': project.user.username,
+            'email': project.user.email,
+        }
+        pattern_info = {
+            'id': project.pattern.id,
+            'title': project.pattern.title,
+            'link': project.pattern.link,
+        }
+        project_info = {
+            'id': project.id,
+            'title': project.title,
+            'description': project.description,
+            'pattern': pattern_info,
+            'user': user_info,
+            'date_started': project.date_started,
+            'finished': project.finished,
+            'date_finished': project.date_finished,
+            'notes': project.notes,
+            # Include any other fields as needed
+        }
+        project_list.append(project_info)
     return JsonResponse({'projects': project_list})
 
 
@@ -284,28 +293,39 @@ def patternyarn_get(request):
         patternyarns = PatternYarn.objects.all()
         patternyarn_list = []
         for patternyarn in patternyarns:
-            pattern = get_pattern_by_id(patternyarn.project_id)
-            yarn = get_yarn_by_id(patternyarn.yarn_id)
-            if pattern and yarn:
-                patternyarn_list.append({
-                    'id': patternyarn.id,
-                    'project_id': patternyarn.project_id,
-                    'quantity': patternyarn.quantity,
-                    'pattern': pattern,
-                    'yarn': yarn,
-                })
+            pattern_info = {
+                'id': patternyarn.id,
+                'pattern_id': patternyarn.pattern.id,
+                'pattern_title': patternyarn.pattern.title,
+                'yarn_id': patternyarn.yarn.id,
+                'yarn_info': {
+                    'brand': patternyarn.yarn.brand,
+                    'colour': patternyarn.yarn.colour,
+                    'material': patternyarn.yarn.material,
+                    'weight': patternyarn.yarn.weight,
+                },
+                'quantity': patternyarn.quantity
+            }
+            patternyarn_list.append(pattern_info)
         return JsonResponse({'patternyarns': patternyarn_list})
     except Exception as e:
         logger.error(e)
         return JsonResponse({'error': str(e)}, status=500)
 
-
 def patternyarn_post(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        pattern_id= data.get('pattern_id')
+        yarn_id= data.get('yarn_id')
+        quantity= data.get('quantity')
+
+        pattern= get_object_or_404(Pattern, id=pattern_id)
+        yarn= get_object_or_404(Yarn, id=yarn_id)
+
         patternyarn_obj = PatternYarn.objects.create(
-            pattern_id=data['pattern_id'],
-            yarn_id=data['yarn_id']
+            pattern=pattern,
+            yarn=yarn,
+            quantity=quantity
         )
         return JsonResponse({'message': 'PatternYarn created successfully'})
     else:

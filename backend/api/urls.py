@@ -34,7 +34,7 @@ urlpatterns = [
     path('project', project_api_view, name='project'),
     path('project/<int:id>/update/', project_put, name='projectUpdate'),
     path('project/<int:id>/delete/', project_delete, name='projectDelete'),
-    path('patternyarn', patternyarn_api_view, name='patternyarn'),
+    path('patternyarn/', patternyarn_api_view, name='patternyarn'),
     path('patternyarn/<int:id>/update/', patternyarn_put, name='patternyarnUpdate'),
     path('patternyarn/<int:id>/delete/', patternyarn_delete, name='patternyarnDelete'),
 ]

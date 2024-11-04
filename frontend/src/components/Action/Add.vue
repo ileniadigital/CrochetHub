@@ -14,7 +14,8 @@
                     </div>
                     <div class="modal-body">
                         <!-- Pass default fields to ActionForm when adding new data -->
-                        <ActionForm ref="actionForm" :edit="false" :data="computedData" @submit="formSubmit" />
+                        <ActionForm ref="actionForm" :model="model" :edit="false" :data="computedData"
+                            @submit="formSubmit" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="closeModal" data-bs-dismiss="modal">
@@ -31,7 +32,6 @@
 </template>
 
 <script>
-import * as bootstrap from 'bootstrap';
 import ActionForm from "./ActionForm.vue";
 
 export default {
@@ -71,8 +71,9 @@ export default {
             const url = "http://localhost:8000";
 
             try {
-                console.log(`${url}/api/${this.model}`);
-                const response = await fetch(`${url}/api/${this.model}`, {
+                const constructURL = `${url}/api/${this.model}/`;
+                console.log(constructURL);
+                const response = await fetch(constructURL, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
