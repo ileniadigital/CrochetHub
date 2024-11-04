@@ -246,7 +246,6 @@ def project_post(request):
             )
 
         project_obj.save()
-        logger.debug(f"Project created: {project_obj}")
         return JsonResponse({'message': 'Project created successfully'})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
@@ -256,11 +255,18 @@ def project_put(request, id):
         try:
             project_obj = Project.objects.get(id=id)
             data = json.loads(request.body)
-            project_obj.name = data.get('name', project_obj.name)
+            user = get_object_or_404(User, id=data['user_id'])
+            pattern = get_object_or_404(Pattern, id=data['pattern_id'])
+            project_obj.title = data.get('title', project_obj.title)
             project_obj.description = data.get('description', project_obj.description)
-            project_obj.status = data.get('status', project_obj.status)
-            project_obj.user_id = data.get('user_id', project_obj.user_id)
+            project_obj.pattern = pattern
+            project_obj.user = user
+            project_obj.date_started = data.get('date_started', project_obj.date_started)
+            project_obj.finished = data.get('finished', project_obj.finished)
+            project_obj.date_finished = data.get('date_finished', project_obj.date_finished)
+            project_obj.notes = data.get('notes', project_obj.notes)
             project_obj.save()
+            logger.debug(f"Project updated: {project_obj}")
             return JsonResponse({'message': 'Project updated successfully'})
         except Project.DoesNotExist:
             return JsonResponse({'error': 'Project not found'}, status=404)
@@ -280,11 +286,7 @@ def patternyarn_api_view(request):
         return patternyarn_get(request)
     if request.method == 'POST':
         return patternyarn_post(request)
-    if request.method == 'PUT':
-        return patternyarn_put(request)
-    if request.method == 'DELETE':
-        return patternyarn_delete(request)
-
+    
 def get_yarn_by_id(yarn_id):
     try:
         yarn = Yarn.objects.get(id=yarn_id)
