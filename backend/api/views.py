@@ -293,20 +293,19 @@ def patternyarn_get(request):
         patternyarns = PatternYarn.objects.all()
         patternyarn_list = []
         for patternyarn in patternyarns:
-            pattern_info = {
+            # Get the yarn name
+            yarn_name = f"{patternyarn.yarn.brand} {patternyarn.yarn.colour} {patternyarn.yarn.material} {patternyarn.yarn.weight}"
+            
+            # Construct the patternyarn information
+            patternyarn_info = {
                 'id': patternyarn.id,
                 'pattern_id': patternyarn.pattern.id,
-                'pattern_title': patternyarn.pattern.title,
+                'pattern': patternyarn.pattern.title,
                 'yarn_id': patternyarn.yarn.id,
-                'yarn_info': {
-                    'brand': patternyarn.yarn.brand,
-                    'colour': patternyarn.yarn.colour,
-                    'material': patternyarn.yarn.material,
-                    'weight': patternyarn.yarn.weight,
-                },
+                'yarn': yarn_name, 
                 'quantity': patternyarn.quantity
             }
-            patternyarn_list.append(pattern_info)
+            patternyarn_list.append(patternyarn_info)
         return JsonResponse({'patternyarns': patternyarn_list})
     except Exception as e:
         logger.error(e)
