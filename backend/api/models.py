@@ -50,14 +50,8 @@ class Pattern(models.Model):
 
     def __str__(self): 
         return f"{self.title}"
-
-# class PatternYarn(models.Model):
-#     '''PatternYarn Model to store yarn needed for a pattern'''
-#     pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-#     yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE)
-#     quantity = models.IntegerField()
-
-
+    
+    
 class User(models.Model):
     '''User Model to store user information'''
     id= models.AutoField(primary_key=True)
@@ -87,7 +81,7 @@ class Project(models.Model):
 
 
 class PatternYarn(models.Model):
-    """ProjectYarn Model to store yarn quantities needed for a project"""
+    """PatternYarn Model to store yarn quantities needed for a project"""
     pattern= models.ForeignKey(Pattern, on_delete=models.CASCADE, related_name="pattern_yarns", default=1)
     yarn = models.ForeignKey(Yarn, on_delete=models.CASCADE, related_name="yarn_patterns")
     quantity = models.IntegerField()

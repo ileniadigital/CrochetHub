@@ -32,7 +32,8 @@
 
             <!-- Other inputs for string, number, and textarea fields -->
             <!-- Date input for date fields -->
-            <input v-else-if="/date/i.test(key)" type="date" :id="key" v-model="formData[key]" class="form-control" />
+            <input v-else-if="/^date|published/i.test(key)" type="date" :id="key" v-model="formData[key]"
+                class="form-control" />
             <!-- Render checkbox for the Finished fields -->
             <input v-else-if="key === 'finished'" type="checkbox" :id="key" v-model="formData[key]"
                 class="form-check-input" />

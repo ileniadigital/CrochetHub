@@ -194,9 +194,11 @@ def project_get(request):
     project_list = []
     for project in projects:
         yarns= PatternYarn.objects.filter(pattern=project.pattern)
-        yarn_info=[
+        yarn_info = [
             {
-                'name': f"{yarn.yarn.brand} {yarn.yarn.colour} {yarn.yarn.material} {yarn.quantity}",
+                'brand': yarn.yarn.brand,
+                'colour': yarn.yarn.colour,
+                'material': yarn.yarn.material,
             }
             for yarn in yarns
         ]

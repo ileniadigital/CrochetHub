@@ -25,13 +25,13 @@
                     <template v-if="field === 'yarns'">
                         <ul>
                             <li v-for="yarn in item.yarns" :key="yarn.id">
-                                {{ yarn.name }}
+                                {{ yarn.brand }} {{ yarn.colour }} {{ yarn.material }}
                             </li>
                         </ul>
                     </template>
 
                     <!-- Template for link field -->
-                    <template v-if="field === 'link'">
+                    <template v-else-if="field === 'link'">
                         <a :href="item[field]">View</a>
                     </template>
                     <template v-else>
