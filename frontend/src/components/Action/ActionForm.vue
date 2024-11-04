@@ -5,7 +5,8 @@
                 key.charAt(0).toUpperCase() + key.slice(1)
                 }}</label>
 
-            <!-- Render dropdowns for yarn and pattern selections -->
+            <!-- Dropdowns for yarn and pattern -->
+            <!-- Specific for PatternYarn -->
             <select v-if="key === 'yarn'" v-model="formData[key]" class="form-control">
                 <option value="" disabled>Select Yarn</option>
                 <option v-for="yarn in yarnOptions" :key="yarn.id" :value="yarn.id">

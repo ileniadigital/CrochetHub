@@ -294,7 +294,7 @@ def patternyarn_get(request):
         patternyarn_list = []
         for patternyarn in patternyarns:
             # Get the yarn name
-            yarn_name = f"{patternyarn.yarn.brand} {patternyarn.yarn.colour} {patternyarn.yarn.material} {patternyarn.yarn.weight}"
+            yarn_name = f"{patternyarn.yarn.brand} {patternyarn.yarn.colour} {patternyarn.yarn.material}"
             
             # Construct the patternyarn information
             patternyarn_info = {
