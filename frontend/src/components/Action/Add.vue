@@ -1,11 +1,7 @@
 <template>
     <div>
         <!-- Action button -->
-        <button @click="updateData" class="btn btn-primary" type="button" data-bs-toggle="modal"
-            data-bs-target="#addModal" id="addButton">
-            <i class="bi bi-plus-square-fill"></i>
-            <p>Add new {{ model }}</p>
-        </button>
+
 
         <!-- Modal -->
         <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true"
@@ -52,10 +48,6 @@ export default {
             type: String,
             required: true,
         },
-        data: {
-            type: Object,
-            required: true,
-        },
         fields: {
             type: Array,
             required: true,
@@ -63,8 +55,8 @@ export default {
     },
     methods: {
         updateData() {
-            console.log("updating data");
-            console.log("loadedData:", this.data);
+            // console.log("updating data");
+            // console.log("loadedData:", this.data);
             this.$emit('update');
         },
         async addData() {
@@ -93,6 +85,13 @@ export default {
                 console.error("Error during POST request:", error);
             }
         },
+        closeModal() {
+            // Close the modal
+            this.resetForm();
+        },
+        resetForm() {
+            this.$refs.actionForm.$el.reset();
+        }
     },
     computed: {
         computedData() {

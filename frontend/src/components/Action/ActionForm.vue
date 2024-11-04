@@ -29,17 +29,17 @@ export default {
     },
     data() {
         return {
+            // initial: {},
             formData: {},
         };
     },
     created() {
+        // this.formData = {};
         this.createFormData();
-    },
-    beforeDestroy() {
-        this.formData = {};
     },
     methods: {
         createFormData() {
+
             if (this.edit) {
                 this.formData = { ...this.data };
             } else {
@@ -48,7 +48,7 @@ export default {
                 }
                 console.log("formData:", this.formData);
             }
-            console.log("Printing data:", this.formData);
+
         },
         submitForm() {
             this.$emit("submit", this.formData);

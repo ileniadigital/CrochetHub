@@ -1,6 +1,9 @@
 <template>
-    <!-- Add modal -->
-    <Add :model="model" :data="computedData" :fields="fields" @added="fetchData" @update="updateData" />
+    <!-- Button to open the Add modal -->
+    <button @click="openAddModal" class="btn btn-primary" type="button" id="addButton">
+        <i class="bi bi-plus-square-fill"></i>
+        <p>Add new {{ model }}</p>
+    </button>
 
     <!-- Headings -->
     <div class="container text-center">
@@ -14,7 +17,7 @@
 
     <!-- Render data -->
     <ul class="list-group">
-        <li class="list-group-item" v-for="(item, index) in items" :key="item.id || index">
+        <li class="list-group-item" v-for="(item, index) in items" :key="item.id">
             <div class="info">
                 <div v-for="field in fields" :key="field" class="data-field item">
                     <template v-if="field === 'link'">
@@ -35,6 +38,9 @@
             </div>
         </li>
     </ul>
+
+    <!-- Always render the Add modal -->
+    <Add ref="addModal" :model="model" :fields="fields" @added="onAdd" @update="updateData" @clear="clearData" />
 
     <!-- Conditionally render the Edit component -->
     <Edit ref="editModal" v-if="activeItem" :model="model" :data="activeItem" @edited="onEdit" @close="closeEdit" />
@@ -76,10 +82,15 @@ export default {
             loadedData: Object.fromEntries(this.fields.map(field => [field, ''])),
             activeItem: null,
             activeDeleteId: null,
+            addModalInstance: null, // Modal instance for controlling visibility
         };
     },
     created() {
         this.fetchData();
+    },
+    mounted() {
+        // Initialize the Bootstrap modal instance for Add modal
+        this.addModalInstance = new bootstrap.Modal(this.$refs.addModal.$refs.addModal);
     },
     methods: {
         async fetchData() {
@@ -106,6 +117,23 @@ export default {
                 console.error(`Error fetching ${this.model}:`, error);
             }
         },
+        clearData() {
+            this.loadedData = {};
+        },
+        openAddModal() {
+            this.addModalInstance.show(); // Open the Add modal
+        },
+        onAdd() {
+            this.fetchData();
+            this.resetAddModal();
+            this.closeAddModal(); // Close Add modal after adding
+        },
+        closeAddModal() {
+            this.addModalInstance.hide(); // Hide the Add modal
+        },
+        resetAddModal() {
+            this.$refs.addModal.resetForm(); // Clear the form data in the Add modal
+        },
         openEdit(item) {
             this.activeItem = { ...item };
             this.$nextTick(() => {
@@ -129,7 +157,7 @@ export default {
                 modal.show();
             });
         },
-        closeDeleteM() {
+        closeDelete() {
             this.activeDeleteId = null;
         }
     },
