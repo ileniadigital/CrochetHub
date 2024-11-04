@@ -222,13 +222,31 @@ def project_get(request):
 
 def project_post(request):
     if request.method == 'POST':
+        logger.debug(f"Request body: {request.body}")
         data = json.loads(request.body)
+        user = get_object_or_404(User, id=data['user'])
+        pattern = get_object_or_404(Pattern, id=data['pattern'])
         project_obj = Project.objects.create(
-            name=data['name'],
+            title=data['title'],
             description=data['description'],
-            status=data['status'],
-            user_id=data['user_id']
+            pattern=pattern,
+            user=user,
+            date_started=data.get('date_started'),
+            finished=data.get('finished'),
+            date_finished=data.get('date_finished'),
+            notes=data.get('notes', '')
         )
+
+        pattern_yarns = PatternYarn.objects.filter(pattern=pattern)
+        for pattern_yarn in pattern_yarns:
+            PatternYarn.objects.create(
+                pattern=pattern,
+                yarn=pattern_yarn.yarn,
+                quantity=pattern_yarn.quantity
+            )
+
+        project_obj.save()
+        logger.debug(f"Project created: {project_obj}")
         return JsonResponse({'message': 'Project created successfully'})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)

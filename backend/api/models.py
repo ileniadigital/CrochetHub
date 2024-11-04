@@ -60,6 +60,7 @@ class Pattern(models.Model):
 
 class User(models.Model):
     '''User Model to store user information'''
+    id= models.AutoField(primary_key=True)
     username = models.CharField(max_length=255)
     email = models.EmailField()
     password = models.CharField(max_length=255)
