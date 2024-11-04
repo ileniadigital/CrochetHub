@@ -1,9 +1,9 @@
 <template>
     <form @submit.prevent="submitForm">
-        <div v-for="(value, key) in formData" :key="key" class="mb-3">
+        <div v-for="(value, key) in formData" :key="key" class="mb-3" v-if="key !== 'yarns'">
             <label :for="key" class="form-label">{{
                 key.charAt(0).toUpperCase() + key.slice(1)
-            }}</label>
+                }}</label>
 
             <!-- Dropdowns for yarn and pattern -->
             <!-- Pattern dropdown -->
@@ -30,9 +30,9 @@
                 </option>
             </select>
 
+            <!-- Other inputs for string, number, and textarea fields -->
             <!-- Date input for date fields -->
             <input v-else-if="/date/i.test(key)" type="date" :id="key" v-model="formData[key]" class="form-control" />
-            <!-- Other inputs for string, number, and textarea fields -->
             <!-- Render checkbox for the Finished fields -->
             <input v-else-if="key === 'finished'" type="checkbox" :id="key" v-model="formData[key]"
                 class="form-check-input" />
@@ -91,6 +91,8 @@ export default {
                     this.formData[key] = "";
                 }
             }
+            // Remove the yarns fields
+            delete this.formData.yarns;
             console.log("Form data created:", this.formData);
         },
         async fetchOptions() {
