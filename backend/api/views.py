@@ -167,6 +167,13 @@ def user_delete(request, id):
         return JsonResponse({"message": "User deleted succesfully"})
     return JsonResponse({"error": "Invalid"}, status=405)
 
+def get_user_by_id(user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        return user.username
+    except User.DoesNotExist:
+        return None
+    
 # Project API view
 def project_api_view(request):
     if request.method == 'GET':
@@ -178,9 +185,30 @@ def project_api_view(request):
     if request.method == 'DELETE':
         return project_delete(request)
 
+# def project_get(request):
+#     projects = list(Project.objects.all().values())
+#     return JsonResponse({'projects': projects})
+
 def project_get(request):
-    projects = list(Project.objects.all().values())
-    return JsonResponse({'projects': projects})
+    projects = Project.objects.all()
+    project_list = []
+    for project in projects:
+        user = get_user_by_id(project.user_id)
+        pattern = get_pattern_by_id(project.pattern_id)
+        if user and pattern:
+            project_list.append({
+                'id': project.id,
+                'title': project.title,
+                'description': project.description,
+                'date_started': project.date_started,
+                'finished': project.finished,
+                'date_finished': project.date_finished,
+                'notes': project.notes,
+                'user': user,
+                'pattern': pattern,
+            })
+    return JsonResponse({'projects': project_list})
+
 
 def project_post(request):
     if request.method == 'POST':
@@ -237,8 +265,6 @@ def get_yarn_by_id(yarn_id):
             'colour': yarn.colour,
             'material': yarn.material,
             'weight': yarn.weight,
-            'price': yarn.price,
-            'yardage': yarn.yardage,
         }
     except Yarn.DoesNotExist:
         return None
@@ -248,10 +274,7 @@ def get_pattern_by_id(pattern_id):
         pattern = Pattern.objects.get(id=pattern_id)
         return {
             'title': pattern.title,
-            'description': pattern.description,
-            'published': pattern.published,
-            'link': pattern.link,
-            'transcript': pattern.transcript,
+            'link': pattern.link
         }
     except Pattern.DoesNotExist:
         return None
@@ -275,7 +298,6 @@ def patternyarn_get(request):
     except Exception as e:
         logger.error(e)
         return JsonResponse({'error': str(e)}, status=500)
-
 
 
 def patternyarn_post(request):
